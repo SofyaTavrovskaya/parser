@@ -20,7 +20,6 @@ def get_path(path):
             yield name
 
 
-
 def get_nova_logs_path(path):
     """
     Collect absolute path of all logs files in directory with logs
