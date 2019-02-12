@@ -5,11 +5,12 @@ import fnmatch
 
 
 def get_path(path):
-    '''
+    """
+    Collect absolute path of all files in directory with logs
 
-    :param path:
-    :return:
-    '''
+    :param path: path to directory with files
+    :return: list with absolute path
+    """
     os.chdir(path)
     list = []
     for root, dirs, files in os.walk(path, topdown=True):
@@ -21,11 +22,12 @@ def get_path(path):
 
 
 def get_nova_logs_path(path):
-    '''
+    """
+    Collect absolute path of all logs files in directory with logs
 
-    :param path:
-    :return:
-    '''
+    :param path: path to directory with  files
+    :return: list with absolute path to logs
+    """
 
     list = []
     for root, dirs, files in os.walk(path):

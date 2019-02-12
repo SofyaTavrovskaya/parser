@@ -13,35 +13,42 @@ LOG = logging.getLogger("Logs parser")
 
 
 def main():
-    '''
+    """
 
-    :return:
-    '''
-    log_files = get_path(sys.argv[1])
-    for file in log_files:
-        if file.endswith('.bz2'):
-            LOG.info("Found .bz2 file %s" % file)
-            unpack_bz2(file)
+    Gets from console absolute path to directory with logs and
+    return dictionary with parsed logs as objects
 
-    log_files = get_path(sys.argv[1])
+    :return:dictionary
 
-    for path in log_files:
-        if path.endswith('.gz'):
-            LOG.info("Found .gz file %s" % path)
-            unpack_gz(path)
+    """
+    if len(sys.argv) < 2:
+        print("Enter absolute path to directory with logs")
+    else:
+        log_files = get_path(sys.argv[1])
+        for file in log_files:
+            if file.endswith('.bz2'):
+                unpack_bz2(file)
+                log_files = get_path(sys.argv[1])
+                LOG.info("Unpack .bz2 file %s" % file)
 
-    log_files = get_nova_logs_path(sys.argv[1])
-    dict = {}
-    log_message = []
+        for path in log_files:
+            if path.endswith('.gz'):
+                unpack_gz(path)
+                LOG.info("Unpack .gz file %s" % path)
 
-    for log_file in log_files:
-        lines_list = parse_file(log_file)
+        log_files = get_nova_logs_path(sys.argv[1])
 
-        for item in lines_list:
-            log = parse_line(item)
-            log_message.append(log)
-    dict[log_file] = log_message
-    print(dict)
+        dict = {}
+        log_message = []
+
+        for log_file in log_files:
+            lines_list = parse_file(log_file)
+            LOG.info("Parse file %s" % log_file)
+            for item in lines_list:
+                log = parse_line(item)
+                log_message.append(log)
+        dict[log_file] = log_message
+        print(dict)
 
 
 if __name__ == '__main__':

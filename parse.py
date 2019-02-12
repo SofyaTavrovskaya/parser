@@ -6,11 +6,12 @@ from log_entry import LogEntry
 
 
 def parse_file(path_to_file):
-    '''
+    """
+    Read all lines in open file of logs and create list of all logs
 
-    :param path_to_file:
-    :return:
-    '''
+    :param path_to_file: absolute path to logs file
+    :return:list of logs lines
+    """
     result = []
     lines = []
     with open(path_to_file, "rt") as fo:
@@ -39,21 +40,24 @@ def parse_file(path_to_file):
 
 
 def parse_line(line):
-    '''
+    """
+    Parse line of log
 
-    :param line:
-    :return:
-    '''
+    :param line: item from list with logs
+    :return: object with parsed log
+    """
     if len(line) == 1:
         first_line = line[0]
         split_line = first_line.split()
         # get msecs from logs line
-        split_time = split_line[1].split('.')
+        try:
+            split_time = split_line[1].split('.')
+        except IndexError:
+            split_time = 0
         try:
             msecs = split_time[1]
         except IndexError:
             msecs = 0
-
         # get asctime from logs line
         asctime = ' '.join([split_line[0], split_time[0]])
         # get process id from logs line
@@ -74,7 +78,10 @@ def parse_line(line):
         # cut line to easy parse
         user_identitys = re.findall(r'\[(.*?)\]', first_line)
         # get request id
-        request_id = user_identitys[0].split()[0]
+        try:
+            request_id = user_identitys[0].split()[0]
+        except IndexError:
+            request_id = '-'
         # get ip address
         instance = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", first_line)
         if user_identitys == ['-']:
@@ -102,7 +109,10 @@ def parse_line(line):
         except IndexError:
             levelname = ''
         user_identitys = re.findall(r'\[(.*?)\]', first_line)
-        request_id = user_identitys[0].split()[0]
+        try:
+            request_id = user_identitys[0].split()[0]
+        except IndexError:
+            request_id = '-'
         instance = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", first_line)
         message = '\n'.join(line[1:])
         return LogEntry(msecs=msecs, asctime=asctime, process=process, name=name, levelname=levelname,
