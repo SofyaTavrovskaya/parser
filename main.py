@@ -21,27 +21,31 @@ def main():
     if len(sys.argv) < 2:
         print("Enter absolute path to directory with logs")
     else:
-        for file in get_path(sys.argv[1]):
+        log_files = get_path(sys.argv[1])
+        for file in log_files:
             if file.endswith('.bz2'):
+                LOG.info("Found .bz2 file %s" % file)
                 unpack_bz2(file)
-                LOG.info("Unpack .bz2 file %s" % file)
 
-        for path in get_path(sys.argv[1]):
+        log_files = get_path(sys.argv[1])
+
+        for path in log_files:
             if path.endswith('.gz'):
+                LOG.info("Found .gz file %s" % path)
                 unpack_gz(path)
-                LOG.info("Unpack .gz file %s" % path)
 
-        dict = {}
+        log_files = get_nova_logs_path(sys.argv[1])
+
+
         log_message = []
 
-        for log_file in get_nova_logs_path(sys.argv[1]):
+        for log_file in log_files:
             lines_list = parse_file(log_file)
             LOG.info("Parse file %s" % log_file)
             for item in lines_list:
                 log = parse_line(item)
                 log_message.append(log)
-        dict[log_file] = log_message
-        print(dict)
+            print(log_message)
 
 
 if __name__ == '__main__':
