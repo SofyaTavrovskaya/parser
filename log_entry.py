@@ -3,6 +3,18 @@
 
 class LogEntry:
     def __init__(self, asctime, msecs, process, levelname, name, request_id, user_identitys, instance, message):
+        """
+        Create class LogEntry
+        :param asctime:
+        :param msecs:
+        :param process:
+        :param levelname:
+        :param name:
+        :param request_id:
+        :param user_identitys:
+        :param instance:
+        :param message:
+        """
         self.asctime = asctime
         self.msecs = msecs
         self.process = process
