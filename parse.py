@@ -15,6 +15,7 @@ def parse_file(path_to_file):
     """
 
     with open(path_to_file, "rt") as fo:
+
         error_block_flag = False
 
         for line in fo.readlines():

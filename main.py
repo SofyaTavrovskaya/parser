@@ -36,7 +36,6 @@ def main():
 
         log_files = get_nova_logs_path(sys.argv[1])
 
-
         log_message = []
 
         for log_file in log_files:
