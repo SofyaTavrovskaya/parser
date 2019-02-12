@@ -3,6 +3,7 @@
 
 import re
 from log_entry import LogEntry
+from loger import LOG
 
 
 def parse_file(path_to_file):
@@ -22,6 +23,7 @@ def parse_file(path_to_file):
             try:
                 level_name = split_line[3]
             except IndexError:
+                LOG.error("Error: list of index out of range. Line: %s" % line)
                 level_name = ''
 
             if level_name in ['ERROR', 'CRITICAL']:
@@ -53,10 +55,12 @@ def parse_line(line):
         try:
             split_time = split_line[1].split('.')
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             split_time = 0
         try:
             msecs = split_time[1]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             msecs = 0
         # get asctime from logs line
         asctime = ' '.join([split_line[0], split_time[0]])
@@ -64,16 +68,19 @@ def parse_line(line):
         try:
             process = split_line[2]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             process = 0
         # get levelname from logs line
         try:
             levelname = split_line[3]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             levelname = ''
         # get name from logs file
         try:
             name = split_line[4]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             name = ''
         # cut line to easy parse
         user_identitys = re.findall(r'\[(.*?)\]', first_line)
@@ -81,6 +88,7 @@ def parse_line(line):
         try:
             request_id = user_identitys[0].split()[0]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             request_id = '-'
         # get ip address
         instance = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", first_line)
@@ -99,19 +107,23 @@ def parse_line(line):
         try:
             process = split_line[2]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             process = 0
         try:
             name = split_line[4]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             name = ''
         try:
             levelname = split_line[3]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             levelname = ''
         user_identitys = re.findall(r'\[(.*?)\]', first_line)
         try:
             request_id = user_identitys[0].split()[0]
         except IndexError:
+            LOG.error("Error: list of index out of range. Line: %s" % line)
             request_id = '-'
         instance = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", first_line)
         message = '\n'.join(line[1:])

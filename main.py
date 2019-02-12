@@ -1,15 +1,12 @@
 #!/usr/bin/python3
 
-import logging
+from loger import LOG
 import sys
 from gather_files_name import get_path, get_nova_logs_path
 from unpack_archive import unpack_gz
 from unpack_archive import unpack_bz2
 from parse import parse_file, parse_line
-
-
-logging.basicConfig(filename='parser.log', level=logging.DEBUG)
-LOG = logging.getLogger("Logs parser")
+import pdb
 
 
 def main():
@@ -25,8 +22,10 @@ def main():
         print("Enter absolute path to directory with logs")
     else:
         log_files = get_path(sys.argv[1])
+
         for file in log_files:
             if file.endswith('.bz2'):
+
                 unpack_bz2(file)
                 log_files = get_path(sys.argv[1])
                 LOG.info("Unpack .bz2 file %s" % file)
