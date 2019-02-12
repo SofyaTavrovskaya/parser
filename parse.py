@@ -13,8 +13,7 @@ def parse_file(path_to_file):
     :param path_to_file: absolute path to logs file
     :return:list of logs lines
     """
-    result = []
-    lines = []
+
     with open(path_to_file, "rt") as fo:
         error_block_flag = False
 
@@ -25,7 +24,6 @@ def parse_file(path_to_file):
             except IndexError:
                 LOG.error("Error: list of index out of range. Line: %s" % line)
                 level_name = ''
-
             if level_name in ['ERROR', 'CRITICAL']:
                 if not error_block_flag:
                     error_block_flag = True
@@ -34,11 +32,8 @@ def parse_file(path_to_file):
             else:
                 if error_block_flag:
                     error_block_flag = False
-                    result.append(lines)
-                line = line.replace('\n', '')
-                line = [line]
-                result.append(line)
-        return result
+                    yield lines
+                yield [line]
 
 
 def parse_line(line):
