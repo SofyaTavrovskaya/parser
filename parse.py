@@ -18,7 +18,10 @@ def parse_file(path_to_file):
 
         for line in fo.readlines():
             split_line = line.split()
-            level_name = split_line[3]
+            try:
+                level_name = split_line[3]
+            except IndexError:
+                level_name = ''
 
             if level_name in ['ERROR', 'CRITICAL']:
                 if not error_block_flag:
@@ -54,11 +57,20 @@ def parse_line(line):
         # get asctime from logs line
         asctime = ' '.join([split_line[0], split_time[0]])
         # get process id from logs line
-        process = split_line[2]
+        try:
+            process = split_line[2]
+        except IndexError:
+            process = 0
         # get levelname from logs line
-        levelname = split_line[3]
+        try:
+            levelname = split_line[3]
+        except IndexError:
+            levelname = ''
         # get name from logs file
-        name = split_line[4]
+        try:
+            name = split_line[4]
+        except IndexError:
+            name = ''
         # cut line to easy parse
         user_identitys = re.findall(r'\[(.*?)\]', first_line)
         # get request id
@@ -77,9 +89,18 @@ def parse_line(line):
         split_time = split_line[1].split('.')
         msecs = split_time[1]
         asctime = ' '.join([split_line[0], split_time[0]])
-        process = split_line[2]
-        name = split_line[4]
-        levelname = split_line[3]
+        try:
+            process = split_line[2]
+        except IndexError:
+            process = 0
+        try:
+            name = split_line[4]
+        except IndexError:
+            name = ''
+        try:
+            levelname = split_line[3]
+        except IndexError:
+            levelname = ''
         user_identitys = re.findall(r'\[(.*?)\]', first_line)
         request_id = user_identitys[0].split()[0]
         instance = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", first_line)
