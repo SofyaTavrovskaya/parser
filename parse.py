@@ -11,7 +11,7 @@ def parse_file(path_to_file):
     Read all lines in open file of logs and create list of all logs
 
     :param path_to_file: absolute path to logs file
-    :return:list of logs lines
+    :return: line
     """
 
     with open(path_to_file, "rt") as fo:

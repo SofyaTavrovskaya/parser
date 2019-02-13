@@ -6,7 +6,6 @@ from gather_files_name import get_path, get_nova_logs_path
 from unpack_archive import unpack_gz
 from unpack_archive import unpack_bz2
 from parse import parse_file, parse_line
-import pdb
 
 
 def main():

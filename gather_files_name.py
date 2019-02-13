@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import os
-import fnmatch
+import re
 
 
 def get_path(path):
@@ -9,7 +9,7 @@ def get_path(path):
     Collect absolute path of all files in directory with logs
 
     :param path: path to directory with files
-    :return: list with absolute path
+    :return: absolute path name
     """
     os.chdir(path)
 
@@ -25,10 +25,11 @@ def get_nova_logs_path(path):
     Collect absolute path of all logs files in directory with logs
 
     :param path: path to directory with  files
-    :return: list with absolute path to logs
+    :return: absolute path name file with logs
     """
 
+    regexp = re.compile(r'(^(?:(?!\bgz\b).)*$)')
     for root, dirs, files in os.walk(path):
         for file in files:
-            if fnmatch.fnmatch(file, '*.log.[0-9]'):
+            if regexp.search(file):
                 yield file
